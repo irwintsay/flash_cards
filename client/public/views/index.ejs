@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app='FlashCards'>
+  <head>
+    <meta charset="utf-8">
+    <title>Flash Cards</title>
+    <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
+    <script src="/js/ang.js" charset="utf-8"></script>
+    <script src="/js/scripts.js" charset="utf-8"></script>
+  </head>
+  <body ng-controller='FlashCardsController'>
+    <header>
+      <h1>Welcome to Flash Cards!</h1>
+      <!-- Navigation goes here -->
+      <button type="button" name="button">Create New Category</button>
+      <button type="button" name="button">Create Quiz Cards</button>
+      <button type="button" name="button">Take Test</button>
+    </header>
+
+    <div class="container">
+      <!-- Dynamic content goes here -->
+
+      <!-- Angular Form -->
+      <form ng-submit='saveCard()'>
+        <input type="text" name="title" placeholder="Title" ng-model="newCard.title">
+        <input type="text" name="subject" placeholder="Subject" ng-model="newCard.subject">
+        <input type="text" name="question" placeholder="Question" ng-model="newCard.question">
+        <input type="text" name="answer" placeholder="Answer" ng-model="newCard.answer">
+        <input type="submit" value="Add">
+      </form>
+
+      <ul>
+        <li ng-repeat="card in allCards">
+          <h3>{{ card.title }}</h3>
+          <h5>{{ card.subject }}</h5>
+          <h5>{{ card.question }}</h5>
+          <h5>{{ card.answer }}</h5>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
