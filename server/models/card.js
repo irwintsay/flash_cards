@@ -10,7 +10,7 @@ var cardSchema = mongoose.Schema({
     required: true
   },
   tests: [{
-    testName: { type: String }
+    type: String
   }],
   question: {
     type: String,

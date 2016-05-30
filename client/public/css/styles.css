@@ -1,5 +1,77 @@
+@font-face {
+  font-family: 'Chunkfive';
+  src: url('Chunkfive.otf');
+}
+@font-face {
+  font-family: 'Open-Sans';
+  src: url('OpenSans-Regular.ttf');
+}
+
 body {
-  background-color: lightgrey;
-  font-family: 'Helvetica';
+  /*background-color: lightgrey;*/
+  font-family: 'Open-Sans';
+  font-size: 16px;
   text-align: center;
+  height: 100vh;
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100&1+0,0+100;Blue+to+Transparent */
+  background: -moz-linear-gradient(-45deg,  rgba(30,87,153,1) 0%, rgba(125,185,232,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg,  rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg,  rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#007db9e8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+}
+
+a {
+  text-decoration: none;
+}
+
+header h1 {
+  font-family: 'Chunkfive';
+  font-size: 3rem;
+}
+
+#flash-text {
+  animation: flash 4s ease infinite;
+}
+
+#nav-bar {
+  width: 100%;
+}
+
+.nav-item {
+  position: relative;
+  display: inline-block;
+  background-color: black;
+  height: 50px;
+  width: 18%;
+  line-height: 50px;
+  font-family: 'Chunkfive';
+  font-size: 1.25rem;
+  color: white;
+  transition: 0.75s ease;
+}
+
+.nav-item:hover {
+  background-color: white;
+  font-size: 1.25rem;
+  color: black;
+}
+
+@keyframes flash {
+  0% {
+    color: black;
+  }
+  25% {
+    color: white;
+  }
+  50% {
+    color: black;
+  }
+  75% {
+    color: white;
+  }
+  100% {
+    color: black;
+  }
 }

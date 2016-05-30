@@ -11,18 +11,34 @@
   </head>
   <body ng-controller='FlashCardsController'>
     <header>
-      <h1>Welcome to Flash Cards!</h1>
+      <h1>Welcome to <span id="flash-text">Flash</span> Cards!</h1>
       <!-- Navigation goes here -->
-      <button type="button" name="button">Create New Category</button>
-      <button type="button" name="button">Create Quiz Cards</button>
-      <button type="button" name="button">Take Test</button>
+      <!-- Example of Mouseover/Mouseleave -->
+      <!-- ng-mouseover="dispAllTests = true" ng-mouseleave="dispAllTests = false" -->
+      <div id="nav-bar">
+        <a href="#" ng-click="showCreateForm()">
+          <div class="nav-item">New Flash Card</div>
+        </a>
+        <a href="#" ng-click="showAllFlashCards()">
+          <div class="nav-item">All Flash Cards</div>
+        </a>
+        <a href="#" ng-click="showAllTests()">
+          <div class="nav-item">All Tests</div>
+        </a>
+        <a href="#">
+          <div class="nav-item">Choose a Test</div>
+        </a>
+        <a href="#" ng-click="getRandomTestCards()">
+          <div class="nav-item">Random Test</div>
+        </a>
+      </div>
     </header>
 
     <div class="container">
       <!-- Dynamic content goes here -->
 
-      <!-- Angular Form -->
-      <form ng-submit='saveCard()'>
+      <!-- Create New Flash Card Form -->
+      <form ng-submit='saveCard()' ng-show="dispCreate">
         <input type="text" name="title" placeholder="Title" ng-model="newCard.title">
         <input type="text" name="subject" placeholder="Subject" ng-model="newCard.subject">
         <input type="text" name="question" placeholder="Question" ng-model="newCard.question">
@@ -30,8 +46,38 @@
         <input type="submit" value="Add">
       </form>
 
-      <ul>
+      <!-- List All Tests -->
+      <ul ng-show="dispAllTests">
+        <li ng-repeat="test in allTests">
+          {{ test }}
+        </li>
+      </ul>
+
+      <!-- List All Flash Cards -->
+      <ul ng-show="dispAllCards">
         <li ng-repeat="card in allCards">
+          <h3>{{ card.title }}</h3>
+          <h5>{{ card.subject }}</h5>
+          <h5>{{ card.question }}</h5>
+          <h5>{{ card.answer }}</h5>
+          <h5>{{ card.tests }}</h5>
+          <label for="newTest">Add this card to a new Test</label>
+          <input type="text" name="newTest" placeholder="Test" ng-model="$parent.newTest">
+          <form>
+            <input type="text" name="title" placeholder="{{ card.title }}" ng-model="card.title">
+            <input type="text" name="title" placeholder="{{ card.subject }}" ng-model="card.subject">
+            <input type="text" name="title" placeholder="{{ card.question }}" ng-model="card.question">
+            <input type="text" name="title" placeholder="{{ card.answer }}" ng-model="card.answer">
+          </form>
+          <button ng-click="addToTest( card._id )">Add to Test</button>
+          <button ng-click="updateCard( card )">Update</button>
+          <button ng-click="deleteCard( card._id )">Delete</button>
+        </li>
+      </ul>
+
+      <!-- List Random Test Flash Cards -->
+      <ul ng-show="dispRandomTest">
+        <li ng-repeat="card in randomTest">
           <h3>{{ card.title }}</h3>
           <h5>{{ card.subject }}</h5>
           <h5>{{ card.question }}</h5>
