@@ -40,7 +40,7 @@
       <!-- New Flash Card Form -->
       <div class="ui grid" ng-show="dispCreate">
         <form class="ui form eight wide column centered raised segment" ng-submit='saveCard()'>
-          <h2 class="ui dividing header">Create a New Flash Card</h2>
+          <h2 class="ui dividing header centered">Create a New Flash Card</h2>
           <div class="fields">
             <div class="eight wide field">
               <label class="">Title</label>
@@ -138,14 +138,13 @@
         </li>
       </ul>
 
-      <div class="ui grid ten columns wide centered">
-        <div class="ui one link centered cards" ng-show="dispRunTest">
+        <div class="ui center aligned container" ng-show="dispRunTest">
           <h1 class="ui header">
             <i class="student icon"></i>
             {{ currentTest }}
           </h1>
-          <div class="card" ng-repeat="card in currentTestCards" ng-click="flip = !flip">
-            <div class="content" ng-show="!flip">
+          <div class="ui centered card" ng-repeat="card in currentTestCards" ng-click="flip = !flip">
+            <div class="content quiz" ng-show="!flip">
               <div class="header">
                 {{ card.title }}
               </div>
@@ -157,14 +156,13 @@
               </div>
             </div>
 
-            <div class="content" ng-show="flip">
+            <div class="content quiz" ng-show="flip">
               <div class="header">
                 A: {{ card.answer }}
               </div>
             </div>
           </div>
         </div>
-      </div>
 
     </div>
   </body>
