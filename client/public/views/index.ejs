@@ -3,13 +3,17 @@
   <head>
     <meta charset="utf-8">
     <title>Flash Cards</title>
+    <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
     <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
     <script src="/js/ang.js" charset="utf-8"></script>
     <script src="/js/scripts.js" charset="utf-8"></script>
   </head>
   <body ng-controller='FlashCardsController'>
+
     <header>
       <h1>Welcome to <span id="flash-text">Flash</span> Cards!</h1>
       <!-- Navigation goes here -->
@@ -23,9 +27,6 @@
           <div class="nav-item">All Flash Cards</div>
         </a>
         <a href="#" ng-click="showAllTests()">
-          <div class="nav-item">All Tests</div>
-        </a>
-        <a href="#">
           <div class="nav-item">Choose a Test</div>
         </a>
         <a href="#" ng-click="getRandomTestCards()">
@@ -34,46 +35,96 @@
       </div>
     </header>
 
-    <div class="container">
-      <!-- Dynamic content goes here -->
+    <div class="ui container">
 
-      <!-- Create New Flash Card Form -->
-      <form ng-submit='saveCard()' ng-show="dispCreate">
-        <input type="text" name="title" placeholder="Title" ng-model="newCard.title">
-        <input type="text" name="subject" placeholder="Subject" ng-model="newCard.subject">
-        <input type="text" name="question" placeholder="Question" ng-model="newCard.question">
-        <input type="text" name="answer" placeholder="Answer" ng-model="newCard.answer">
-        <input type="submit" value="Add">
-      </form>
-
-      <!-- List All Tests -->
-      <ul ng-show="dispAllTests">
-        <li ng-repeat="test in allTests">
-          {{ test }}
-        </li>
-      </ul>
+      <!-- New Flash Card Form -->
+      <div class="ui grid" ng-show="dispCreate">
+        <form class="ui form eight wide column centered raised segment" ng-submit='saveCard()'>
+          <h2 class="ui dividing header">Create a New Flash Card</h2>
+          <div class="fields">
+            <div class="eight wide field">
+              <label class="">Title</label>
+              <input type="text" name="title" placeholder="Title" ng-model="newCard.title">
+            </div>
+            <div class="eight wide field">
+              <label class="">Subject</label>
+              <input type="text" name="subject" placeholder="Subject" ng-model="newCard.subject">
+            </div>
+          </div>
+          <div class="field">
+            <label class="">Question</label>
+            <input type="text" name="question" placeholder="Question" ng-model="newCard.question">
+          </div>
+          <div class="field">
+            <label class="">Answer</label>
+            <input type="text" name="answer" placeholder="Answer" ng-model="newCard.answer">
+          </div>
+          <div class="fields">
+            <div class="eight wide field">
+              <label>Add to New Test</label>
+              <input type="text" name="newTest" placeholder="Add to New Test" ng-model="newTest">
+            </div>
+            <div class="eight wide field">
+              <label>Add to Existing Test</label>
+              <select class="ui fluid dropdown" name="" ng-model="newTest">
+                <option value="">Choose an existing test</option>
+                <option ng-repeat="test in allTests" value="{{ test }}">{{ test }}</option>
+              </select>
+            </div>
+          </div>
+          <input class="ui button" type="submit" value="Create">
+        </form>
+      </div>
 
       <!-- List All Flash Cards -->
-      <ul ng-show="dispAllCards">
-        <li ng-repeat="card in allCards">
-          <h3>{{ card.title }}</h3>
-          <h5>{{ card.subject }}</h5>
-          <h5>{{ card.question }}</h5>
-          <h5>{{ card.answer }}</h5>
-          <h5>{{ card.tests }}</h5>
-          <label for="newTest">Add this card to a new Test</label>
-          <input type="text" name="newTest" placeholder="Test" ng-model="$parent.newTest">
-          <form>
-            <input type="text" name="title" placeholder="{{ card.title }}" ng-model="card.title">
-            <input type="text" name="title" placeholder="{{ card.subject }}" ng-model="card.subject">
-            <input type="text" name="title" placeholder="{{ card.question }}" ng-model="card.question">
-            <input type="text" name="title" placeholder="{{ card.answer }}" ng-model="card.answer">
-          </form>
-          <button ng-click="addToTest( card._id )">Add to Test</button>
-          <button ng-click="updateCard( card )">Update</button>
-          <button ng-click="deleteCard( card._id )">Delete</button>
-        </li>
-      </ul>
+      <div class="ui three cards" ng-show="dispAllCards">
+        <div class="card" ng-repeat="card in allCards">
+          <div class="content">
+            <div class="header">
+              {{ card.title }}
+            </div>
+            <div class="description left aligned">
+              Subject: {{ card.subject }}
+            </div>
+            <div class="description left aligned">
+              Q: {{ card.question }}
+            </div>
+            <div class="description left aligned">
+              A: {{ card.answer }}
+            </div>
+            <div class="description left aligned">
+              Tests: <span ng-repeat="test in card.tests">: {{ test }} </span>
+            </div>
+            <form class="ui form">
+              <div class="inline field">
+                <label>Add to a test</label>
+                <input type="text" name="newTest" placeholder="Test" ng-model="$parent.newTest">
+              </div>
+            </form>
+            <form class="ui form" ng-show="$parent.dispUpdateForm">
+              <input type="text" name="title" placeholder="{{ card.title }}" ng-model="card.title">
+              <input type="text" name="title" placeholder="{{ card.subject }}" ng-model="card.subject">
+              <input type="text" name="title" placeholder="{{ card.question }}" ng-model="card.question">
+              <input type="text" name="title" placeholder="{{ card.answer }}" ng-model="card.answer">
+            </form>
+            <button class="ui mini button" ng-click="addToTest( card, card._id )">Add to Test</button>
+            <button class="ui mini button" ng-click="$parent.dispUpdateForm = !$parent.dispUpdateForm">Update</button>
+            <button class="ui mini button" ng-click="updateCard( card )" ng-show="$parent.dispUpdateForm">Confirm</button>
+            <button class="ui mini button" ng-click="deleteCard( card._id )">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- List All Tests -->
+      <div class="ui one link centered cards" ng-show="dispAllTests">
+        <div class="card" ng-repeat="test in allTests" ng-click="runTest(test)">
+          <div class="content">
+            <div class="header">
+              {{ test }}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- List Random Test Flash Cards -->
       <ul ng-show="dispRandomTest">

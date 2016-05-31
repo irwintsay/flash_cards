@@ -6,7 +6,8 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
     title: '',
     subject: '',
     question: '',
-    answer: ''
+    answer: '',
+    tests: []
   };
   $scope.allTests = [];
   $scope.newTest = '';
@@ -17,7 +18,18 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
   $scope.dispAllCards = false;
   $scope.dispAllTests = false;
   $scope.dispRandomTest = false;
+  $scope.dispUpdateForm = false;
 
+  $scope.clearVars = function() {
+    $scope.newCard = {
+      title: '',
+      subject: '',
+      question: '',
+      answer: '',
+      tests: []
+    };
+    $scope.newTest = '';
+  };
   $scope.getAllCards = function() {
     $http.get('/api/cards').then(function(response) {
       $scope.allCards = response.data;
@@ -39,12 +51,16 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
       });
     });
   };
+  // Add New Flash Card
   $scope.saveCard = function() {
+    $scope.newCard.tests.push($scope.newTest);
     var dbCard = {
       card: $scope.newCard
     };
+    console.log($scope.newTest);
     $http.post('/api/cards', dbCard).then(function(response) {
       $scope.allCards.push(response.data);
+      $scope.clearVars();
     });
   };
   // Edit Flash Card
@@ -61,9 +77,9 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
       });
     });
   };
-  $scope.addToTest = function(id) {
+  $scope.addToTest = function(card, id) {
     console.log("Attempting to add to test");
-    if ($scope.newTest != '') {
+    if ($scope.newTest != '' && card.tests.indexOf($scope.newTest) == -1) {
       $http.put('/api/cards/test/' + id, { testName: $scope.newTest }).then(function(response) {
         console.log(response);
       });
@@ -75,18 +91,21 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
     $scope.dispAllCards = false;
     $scope.dispAllTests = false;
     $scope.dispRandomTest = false;
+    $scope.dispUpdateForm = false;
   };
   $scope.showAllFlashCards = function() {
     $scope.dispAllCards = true;
     $scope.dispCreate = false;
     $scope.dispAllTests = false;
     $scope.dispRandomTest = false;
+    $scope.dispUpdateForm = false;
   };
   $scope.showAllTests = function() {
     $scope.dispAllTests = true;
     $scope.dispCreate = false;
     $scope.dispAllCards = false;
     $scope.dispRandomTest = false;
+    $scope.dispUpdateForm = false;
   };
 
   $scope.getRandomTest = function() {
@@ -106,6 +125,9 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
     $scope.dispCreate = false;
     $scope.dispAllCards = false;
     $scope.dispAllTests = false;
+  };
+  $scope.runTest = function(test) {
+    console.log(test);
   };
 
   $scope.getAllCards();
