@@ -11,7 +11,9 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
   };
   $scope.allTests = [];
   $scope.newTest = '';
-  $scope.randomTest= [];
+
+  $scope.currentTest = '';
+  $scope.currentTestCards = [];
 
   // ng-show Variables
   $scope.dispCreate = false;
@@ -19,6 +21,7 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
   $scope.dispAllTests = false;
   $scope.dispRandomTest = false;
   $scope.dispUpdateForm = false;
+  $scope.dispRunTest = false;
 
   $scope.clearVars = function() {
     $scope.newCard = {
@@ -43,6 +46,7 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
     });
   };
   $scope.getAllTests = function() {
+    $scope.allTests = [];
     $scope.allCards.forEach(function(f) {
       f.tests.forEach(function(t) {
         if ($scope.allTests.indexOf(t) == -1) {
@@ -61,6 +65,7 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
     $http.post('/api/cards', dbCard).then(function(response) {
       $scope.allCards.push(response.data);
       $scope.clearVars();
+      $scope.showAllFlashCards();
     });
   };
   // Edit Flash Card
@@ -90,44 +95,45 @@ flashCardsApp.controller("FlashCardsController", ["$scope", "$http", function($s
     $scope.dispCreate = true;
     $scope.dispAllCards = false;
     $scope.dispAllTests = false;
-    $scope.dispRandomTest = false;
     $scope.dispUpdateForm = false;
+    $scope.dispRunTest = false;
   };
   $scope.showAllFlashCards = function() {
     $scope.dispAllCards = true;
     $scope.dispCreate = false;
     $scope.dispAllTests = false;
-    $scope.dispRandomTest = false;
     $scope.dispUpdateForm = false;
+    $scope.dispRunTest = false;
   };
   $scope.showAllTests = function() {
+    $scope.getAllCards();
     $scope.dispAllTests = true;
     $scope.dispCreate = false;
     $scope.dispAllCards = false;
-    $scope.dispRandomTest = false;
     $scope.dispUpdateForm = false;
+    $scope.dispRunTest = false;
   };
 
   $scope.getRandomTest = function() {
     return $scope.allTests[Math.floor(Math.random() * $scope.allTests.length)];
   };
-  $scope.getRandomTestCards = function() {
-    $scope.randomTest = [];
-    var test = $scope.getRandomTest();
-    console.log(test);
+  $scope.getCurrentTestCards = function(test) {
+    $scope.currentTestCards = [];
     $scope.allCards.forEach(function(f) {
       if (f.tests.indexOf(test) != -1) {
-        $scope.randomTest.push(f);
+        $scope.currentTestCards.push(f);
       }
     });
-
-    $scope.dispRandomTest = true;
-    $scope.dispCreate = false;
-    $scope.dispAllCards = false;
-    $scope.dispAllTests = false;
   };
   $scope.runTest = function(test) {
-    console.log(test);
+    $scope.currentTest = test;
+    $scope.getCurrentTestCards(test);
+
+    $scope.dispAllTests = false;
+    $scope.dispCreate = false;
+    $scope.dispAllCards = false;
+    $scope.dispUpdateForm = false;
+    $scope.dispRunTest = true;
   };
 
   $scope.getAllCards();

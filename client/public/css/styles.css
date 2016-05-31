@@ -36,6 +36,11 @@ header h1 {
 
 #flash-text {
   animation: flashonce 4s ease 1;
+  transition: 2s ease;
+}
+
+#flash-text:hover {
+  color: white;
 }
 
 #nav-bar {

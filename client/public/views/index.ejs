@@ -29,7 +29,7 @@
         <a href="#" ng-click="showAllTests()">
           <div class="nav-item">Choose a Test</div>
         </a>
-        <a href="#" ng-click="getRandomTestCards()">
+        <a href="#" ng-click="runTest(getRandomTest())">
           <div class="nav-item">Random Test</div>
         </a>
       </div>
@@ -97,8 +97,7 @@
             </div>
             <form class="ui form">
               <div class="inline field">
-                <label>Add to a test</label>
-                <input type="text" name="newTest" placeholder="Test" ng-model="$parent.newTest">
+                <input type="text" name="newTest" placeholder="Add to a Test" ng-model="$parent.newTest">
               </div>
             </form>
             <form class="ui form" ng-show="$parent.dispUpdateForm">
@@ -116,8 +115,11 @@
       </div>
 
       <!-- List All Tests -->
-      <div class="ui one link centered cards" ng-show="dispAllTests">
-        <div class="card" ng-repeat="test in allTests" ng-click="runTest(test)">
+      <div class="ui three link cards" ng-show="dispAllTests">
+        <div class="blue card" ng-repeat="test in allTests" ng-click="runTest(test)">
+          <div class="image">
+            <img src="http://www.hercampus.com/sites/default/files/2014/05/11/child%20taking%20test.jpg" alt="" />
+          </div>
           <div class="content">
             <div class="header">
               {{ test }}
@@ -135,6 +137,35 @@
           <h5>{{ card.answer }}</h5>
         </li>
       </ul>
+
+      <div class="ui grid ten columns wide centered">
+        <div class="ui one link centered cards" ng-show="dispRunTest">
+          <h1 class="ui header">
+            <i class="student icon"></i>
+            {{ currentTest }}
+          </h1>
+          <div class="card" ng-repeat="card in currentTestCards" ng-click="flip = !flip">
+            <div class="content" ng-show="!flip">
+              <div class="header">
+                {{ card.title }}
+              </div>
+              <div class="description">
+                Subject: {{ card.subject }}
+              </div>
+              <div class="description">
+                Q: {{ card.question }}
+              </div>
+            </div>
+
+            <div class="content" ng-show="flip">
+              <div class="header">
+                A: {{ card.answer }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>
